@@ -1,6 +1,8 @@
 # frozen_string_literal: true
-
+require 'httparty'
+require 'json'
 class Users::SessionsController < Devise::SessionsController
+  include HTTParty
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -9,9 +11,23 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    if params[:login_type] == "social"
+      url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{params["id_token"]}"                  
+      response = HTTParty.get(url)                   
+      @user = User.create_user_for_google(response.parsed_response)
+      # debugger 
+      # tokens = @user.create_new_auth_token                      
+      @user.save
+      respond_with @user
+      # render json: {
+      #   status: { code: 200, messages: "User signed in successfully", data: @user}
+      # }
+    else
+      super
+    end
+  end
+  
 
   # DELETE /resource/sign_out
   # def destroy

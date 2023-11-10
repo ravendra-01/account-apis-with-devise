@@ -46,6 +46,13 @@ group :development do
   # gem "spring"
 end
 
-gem "devise"
-gem "devise-jwt"
+gem 'devise'
+gem 'devise-jwt'
 gem 'fast_jsonapi'
+gem 'dotenv-rails'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection'
+gem 'devise_token_auth'
+gem 'httparty'
+gem 'jwt'
